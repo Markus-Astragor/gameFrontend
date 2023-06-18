@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import './loader.css'
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
@@ -10,6 +11,7 @@ function Register() {
   let userName = useRef();
   let password = useRef();
   let repeatPassword = useRef();
+  let navigateUser = useNavigate();
 
 
   let CheckUserValid = (userName, password, repeatPassword) => {
@@ -40,6 +42,7 @@ function Register() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoader(true)
     let userNameValue = userName.current.value;
     let passwordValue = password.current.value;
     let repeatPasswordValue = repeatPassword.current.value;
@@ -53,8 +56,11 @@ function Register() {
       userName: userNameValue,
       password: passwordValue
     }).then(response => {
+      setLoader(false)
       console.log(response);
+      navigateUser('/gameApp')
     }).catch(error => {
+      setLoader(false)
       console.log(error);
     })
   }
@@ -77,11 +83,15 @@ function Register() {
         <div className='w-1/6'>
           <span>Repeat password</span>
           <input type='password' className="bg-black-50 border border-black-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-yellow-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="repeat password" required ref={repeatPassword} />
-          <p className={repeatPasswordEror ? 'text-red-500': ''}>{repeatPasswordEror}</p>
+          <p className={repeatPasswordEror ? 'text-red-500' : ''}>{repeatPasswordEror}</p>
         </div>
-        <div className='w-1/6 flex justify-center'>
-          <button className='rounded-lg bg-sky-500 px-4 py-2 text-white my-4 hover:bg-sky-700 transition ease-in-out duration-700'>Register</button>
-        </div>
+        {
+          loader ? <div className="loadingio-spinner-spinner-pdaa8ge8d6"><div className="ldio-10wnxy4fix6">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          </div></div> : <div className='w-1/6 flex justify-center'>
+            <button className='rounded-lg bg-sky-500 px-4 py-2 text-white my-4 hover:bg-sky-700 transition ease-in-out duration-700'>Register</button>
+          </div>
+        }
         <div className='w-1/6 flex justify-center'>
           <span className='font-bold hover:text-sky-500 transition ease-in-out duration-700'><NavLink to='/login'>Login</NavLink></span>
         </div>
