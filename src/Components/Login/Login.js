@@ -55,8 +55,10 @@ function Login() {
       console.log(response);
       navigateUser('/gameApp')
       const token = response.data.token;
-      const userName = response.data.userName;
-      setNickName(userName);
+      const myuserName = response.data ? response.data.userName : 'An error with userName';
+      console.log('myUser' ,myuserName);
+      setNickName(myuserName);
+      console.log('nickname3' ,nickName);
       console.log('nickname' , nickName);
       localStorage.setItem('token', token);
     }).catch(error => {
@@ -68,7 +70,8 @@ function Login() {
   }
   useEffect(() => {
     console.log('nickname2' , nickName);
-  }, [nickName])
+    
+  }, [nickName, handleLogin])
   return (
     <DataContext.Provider value={{nickName: nickName, setNickName: setNickName}}>
     <form onSubmit={handleLogin}>
