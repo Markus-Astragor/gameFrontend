@@ -44,13 +44,13 @@ function Login() {
     }
 
     setErrorParagraph('')
-
+    setNickName('');
     
 
     axios.post('http://localhost:8080/login', {
       userName: userNameLoginValue,
       password: passwordLoginValue
-    }).then(response => {
+    }).then( (response) => {
       setLoader(false);
       console.log(response);
       navigateUser('/gameApp')
@@ -58,8 +58,7 @@ function Login() {
       const myuserName = response.data ? response.data.userName : 'An error with userName';
       console.log('myUser' ,myuserName);
       setNickName(myuserName);
-      console.log('nickname3' ,nickName);
-      console.log('nickname' , nickName);
+      console.log('myy', nickName);
       localStorage.setItem('token', token);
     }).catch(error => {
       setLoader(false)
@@ -71,7 +70,7 @@ function Login() {
   useEffect(() => {
     console.log('nickname2' , nickName);
     
-  }, [nickName, handleLogin])
+  }, [nickName])
   return (
     <DataContext.Provider value={{nickName: nickName, setNickName: setNickName}}>
     <form onSubmit={handleLogin}>
