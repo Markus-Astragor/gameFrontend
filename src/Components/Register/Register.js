@@ -2,6 +2,9 @@ import React, { useRef, useState } from 'react';
 import './loader.css'
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Userpage from '../Userpage/Userpage';
+
+
 
 function Register() {
   const [errorParagraphNick, setErrorParagraphNick] = useState('');
@@ -18,18 +21,18 @@ function Register() {
     setErrorParagraphNick('')
     setPasswordEror('');
     setReoeatPasswordError('')
-    if (userName.length <= 2) {
-      setErrorParagraphNick('Your nickname should have more symbols');
+    if (userName.length <= 2 || userName.length > 16) {
+      setErrorParagraphNick('Your nickname should have more than 2 symbols and less than 16');
       return 1;
     }
 
-    if (password.length <= 8) {
-      setPasswordEror('Your password should have more than 8 symbols')
+    if (password.length <= 8 || password.length > 16) {
+      setPasswordEror('Your password should have more than 8 symbols and less than 16')
       return 1;
     }
 
-    if (repeatPassword.length <= 8) {
-      setReoeatPasswordError('Your repeatPassword should contain more than 8 symbols');
+    if (repeatPassword.length <= 8 || repeatPassword.length > 16) {
+      setReoeatPasswordError('Your repeatPassword should contain more than 8 symbols and less than 16');
       return 1;
     }
 
@@ -49,6 +52,7 @@ function Register() {
     let checkUserValid = CheckUserValid(userNameValue, passwordValue, repeatPasswordValue)
 
     if (checkUserValid == 1) {
+      setLoader(false);
       return
     }
 
@@ -59,16 +63,18 @@ function Register() {
       setLoader(false)
       console.log(response);
       navigateUser('/gameApp')
+
     }).catch(error => {
-      setLoader(false)
-      console.log(error);
-    })
+          setLoader(false);
+          setReoeatPasswordError(error.response.data);
+          console.log(error);
+        })
   }
   return (
     <form onSubmit={handleSubmit}>
       <div className='h-screen flex justify-center items-center flex-col'>
         <div className='w-1/6'>
-          <h2 className='font-black text-2xl text-center'>Let's login to the game</h2>
+          <h2 className='font-black text-2xl text-center'>Let's register to the game</h2>
         </div>
         <div className='w-1/6'>
           <span>UserName</span>

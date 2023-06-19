@@ -1,24 +1,51 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../Register/loader.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DataContext from '../DataContext/DataContext';
 
 function Login() {
   const [loader, setLoader] = useState(false);
   const [errorParagraph, setErrorParagraph] = useState('');
+  const [nickName, setNickName] = useState('');
+
   let userName = useRef(null);
   let password = useRef(null);
   let navigateUser = useNavigate();
 
 
+  const checckUserLogin = (userName, password) => {
+    if(userName.length <=2 || userName.length > 16)
+    {
+      setErrorParagraph('Your userName should be more than 2 symbols and less than 16')
+      return 1
+    }
+
+    if(password.length <= 8 || password.length > 16)
+    {
+      setErrorParagraph('Your password should be more than 8 symbols and less than 16');
+      return 1
+    }
+  }
+
   const handleLogin = (event) => {
 
     event.preventDefault();
-    setErrorParagraph('')
     setLoader(true);
-
     let userNameLoginValue = userName.current.value;
     let passwordLoginValue = password.current.value;
+
+    let checkUser = checckUserLogin(userNameLoginValue, passwordLoginValue);
+
+    if(checkUser == 1)
+    {
+      setLoader(false);
+      return
+    }
+
+    setErrorParagraph('')
+
+    
 
     axios.post('http://localhost:8080/login', {
       userName: userNameLoginValue,
@@ -27,8 +54,11 @@ function Login() {
       setLoader(false);
       console.log(response);
       navigateUser('/gameApp')
-      const token = response.data;
-      localStorage.setItem(token);
+      const token = response.data.token;
+      const userName = response.data.userName;
+      setNickName(userName);
+      console.log('nickname' , nickName);
+      localStorage.setItem('token', token);
     }).catch(error => {
       setLoader(false)
       const errorMessage =  error.response ? error.response.data : 'An error occurred';
@@ -36,7 +66,11 @@ function Login() {
       console.log(error);
     })
   }
+  useEffect(() => {
+    console.log('nickname2' , nickName);
+  }, [nickName])
   return (
+    <DataContext.Provider value={{nickName: nickName, setNickName: setNickName}}>
     <form onSubmit={handleLogin}>
       <div className='h-screen flex justify-center items-center flex-col'>
         <div className='w-1/6'>
@@ -44,7 +78,7 @@ function Login() {
         </div>
         <div className='w-1/6'>
           <span>UserName</span>
-          <input type="text" class="bg-black-50 border border-black-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-yellow-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required ref={userName} />
+          <input type="text" className="bg-black-50 border border-black-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-yellow-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required ref={userName} />
         </div>
         <div className='w-1/6'>
           <span>Password</span>
@@ -64,6 +98,7 @@ function Login() {
         </div>
       </div>
     </form>
+    </DataContext.Provider>
   )
 }
 

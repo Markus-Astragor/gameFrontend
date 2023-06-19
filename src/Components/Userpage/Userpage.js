@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import AppContext from '../DataContext/AppContext'
 
 function Userpage() {
+  const {nickName} = useContext(AppContext)
+  console.log(nickName); 
   return (
     <div>
-      This is a game app
+      Welcome to the game, {nickName}
     </div>
   )
 }
