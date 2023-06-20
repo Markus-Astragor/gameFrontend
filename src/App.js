@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [nickName, setNickName] = useState('');
   useEffect( () => {
-    console.log(nickName);
+    console.log('APP.js' ,nickName);
 
   }, [nickName])
   return (

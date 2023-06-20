@@ -66,7 +66,8 @@ function Register() {
 
     }).catch(error => {
           setLoader(false);
-          setReoeatPasswordError(error.response.data);
+          const errorMessage = error.response ? error.response.data : 'An error occured' 
+          setReoeatPasswordError(errorMessage);
           console.log(error);
         })
   }
