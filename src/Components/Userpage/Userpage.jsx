@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import AppContext from '../DataContext/AppContext'
+import WelcomePage from './Game/Welcome';
 
 function Userpage() {
   // const {nickName} = useContext(AppContext)
@@ -7,7 +8,8 @@ function Userpage() {
   const nickName = localStorage.getItem('userName'); 
   return (
     <div>
-      Welcome to the game, {nickName}
+      <h2 className='text-center font-bold text-2xl'>Welcome to the game, {nickName}</h2>
+      <WelcomePage/>
     </div>
   )
 }
