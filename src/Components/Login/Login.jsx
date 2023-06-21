@@ -26,6 +26,11 @@ function Login() {
     }
   }
 
+  const handleNickName = (userName) => {
+    setNickName(userName);
+    console.log('nickname function', nickName);
+  }
+
   const handleLogin = (event) => {
 
     event.preventDefault();
@@ -52,13 +57,12 @@ function Login() {
       console.log(response);
       const token = response.data.token;
       const myuserName = response.data ? response.data.userName : 'An error with userName';
-      console.log('myUser', myuserName);
-      setNickName(myuserName);
-      console.log('myy', nickName);
       localStorage.setItem('token', token);
       localStorage.setItem('userName', myuserName);
+      handleNickName(myuserName)
       // if (nickName !== '') 
       // {
+        console.log('myy', nickName);
         navigateUser('/gameApp')
       // }
     }).catch(error => {
