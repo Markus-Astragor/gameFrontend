@@ -57,10 +57,10 @@ function Login() {
       console.log('myy', nickName);
       localStorage.setItem('token', token);
       localStorage.setItem('userName', myuserName);
-      if (nickName !== '') 
-      {
+      // if (nickName !== '') 
+      // {
         navigateUser('/gameApp')
-      }
+      // }
     }).catch(error => {
       setLoader(false)
       const errorMessage = error.response ? error.response.data : 'An error occurred';

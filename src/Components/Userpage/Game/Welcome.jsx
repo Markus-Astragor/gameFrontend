@@ -201,7 +201,17 @@ async function handleDrop(column) {
           }
         }
       }
-      function isHorizontalWin() {
+
+      function isVerticalWin()
+      {
+        const { rows } = boardSettings;
+        const { columns } = boardSettings;
+        const { empty } = boardSettings.colors;
+        
+      }
+
+      function isHorizontalWin() 
+      {
         const { rows } = boardSettings;
         const { columns } = boardSettings;
         const { empty } = boardSettings.colors;
@@ -221,7 +231,8 @@ async function handleDrop(column) {
         }
       }
 
-      function isBackwardsDiagonalWin() {
+      function isBackwardsDiagonalWin() 
+      {
         const { rows } = boardSettings;
         const { columns } = boardSettings;
         const { empty } = boardSettings.colors;
@@ -240,7 +251,8 @@ async function handleDrop(column) {
           }
         }
       }
-      function isForwardsDiagonalWin() {
+      function isForwardsDiagonalWin() 
+      {
         const { rows } = boardSettings;
         const { columns } = boardSettings;
         const { empty } = boardSettings.colors;
